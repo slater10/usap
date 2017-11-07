@@ -1,5 +1,17 @@
 class config {
 
+
+	ini_setting { 'agent_runinterval':
+		
+		ensure  => present,
+		path    => "/etc/puppetlabs/puppet/puppet.conf",
+		section => "main",
+		setting => "runinterval",
+		value   => "1200",
+	
+	}
+
+
 }
 
 class base {
@@ -30,10 +42,15 @@ class base {
 
 	}
 
-       package { $packagename:
+        package { $packagename:
                 ensure  => installed,
 		require => Yumrepo['epel'],
-       }
+        }
+
+	package { 'ruby-augeas': 
+		ensure => installed, 
+		require => Yumrepo['epel'],
+	}
 
 } 
 
