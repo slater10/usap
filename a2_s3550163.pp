@@ -49,32 +49,31 @@ class packages {
 class users {
 
 	user { 'Becca':
-		ensure => present,
-		groups => ['sysadmin', 'cars'],
-		home => '/home/Becca',
+		ensure     => present,
+		groups     => ['sysadmin', 'cars'],
+		home       => '/home/Becca',
 		managehome => true,
-		uid => 10010163,
-		shell => '/bin/bash'	
+		uid        => 10010163,
+		shell      => '/bin/bash'	
 
 	}
 
 	user { 'Fred':
-		ensure => present,
-		uid => 10020163,
-		groups => ['trucks', 'cars' ],
-		home => '/home/Fred',
+		ensure     => present,
+		uid        => 10020163,
+		groups     => ['trucks', 'cars' ],
+		home       => '/home/Fred',
 		managehome => true,
-		shell => '/bin/csh',
+		shell      => '/bin/csh',
 	}
 
-
 	user { 'Wilma':
-		ensure => present,
-		home => '/home/wilma',
+		ensure     => present,
+		home       => '/home/wilma',
 		managehome => true,
-		uid => 10030163,
-		groups => ['trucks', 'cars', 'ambulances'],
-		shell => '/bin/bash'
+		uid        => 10030163,
+		groups     => ['trucks', 'cars', 'ambulances'],
+		shell      => '/bin/bash'
 	}
 
 
