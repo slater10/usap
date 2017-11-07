@@ -1,22 +1,48 @@
-
-
 class config {
 
 }
 
 class base {
+	
+	yumrepo { "epel" :
+
+		baseurl  => "http://fedora.melbourneitmirror.net/epel/7/x86_64/",
+		descr    => "epel",
+		enabled  => 1,
+		gpgcheck => 0,
+
+	}
+
+        case $::osfamily {
+
+        'redhat': {
+        
+		$packagename = 'fuse-sshfs'
+        
+		}
+
+
+        default: {
+		
+		$packagename = 'sshfs'
+        
+		}
+
+	}
+
+       package { $packagename:
+                ensure  => installed,
+		require => Yumrepo['epel'],
+       }
 
 } 
 
 
-
 class packages {
 
-	package { 'csh': ensure => installed }
-	package { 'vim': ensure => installed }
-	package { 'links': ensure => installed }
-
-
+	Package { ensure => 'installed' }
+	$packages = [ 'openssh', 'httpd', 'tmux', 'mariadb', 'mariadb-server', 'vnc-server', 'gcc', 'gdb', 'cgdb', 'dia', 'vim', 'emacs' ]
+	package { $packages: }
 
 }
 
