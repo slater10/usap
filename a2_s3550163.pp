@@ -1,27 +1,53 @@
-class config {
+
+class enable_services {
 
 
-	ini_setting { 'agent_runinterval':
-		
-		ensure  => present,
-		path    => "/etc/puppetlabs/puppet/puppet.conf",
-		section => "main",
-		setting => "runinterval",
-		value   => "1200",
-	
-	}
+  service { 'puppet':
+    enable => true,
+  }
+  
+  
+  service { 'mariadb':
+    enable => true,
+	ensure => running
+  }
 
 
+  service { 'sshd':
+    enable => true,
+	ensure => running
+  } 
+ 
+  service { 'httpd': 
+	enable => true, 
+	start => true,
+	ensure => running
+  }
 }
 
+
 class base {
+
+
+	package  { 'rubygems': ensure => installed }
+
+	package { 'puppet-lint':
+
+		ensure   => '1.1.0',
+
+		provider => 'gem',
+
+		require  => Package['rubygems'],
+
+
+	}
 	
 	yumrepo { "epel" :
 
 		baseurl  => "http://fedora.melbourneitmirror.net/epel/7/x86_64/",
 		descr    => "epel",
 		enabled  => 1,
-		gpgcheck => 0,
+	gpgcheck => 0,
 
 	}
 
@@ -52,14 +78,66 @@ class base {
 		require => Yumrepo['epel'],
 	}
 
+	package { 'augeas':
+		ensure => installed,
+		require => Yumrepo['epel']
+	}
+
 } 
+
+
+
+class config {
+
+
+augeas { "configure_sshd":
+	context	=> "/files/etc/ssh/sshd_config",
+	changes	=>	[ 	
+				"set PermitRootLogin no"
+			],
+}
+
+#augeas { "configure_runinterval":
+#	context	=> "/files/etc/puppetlabs/puppet/puppet.conf",
+#	changes	=>	[
+#				"set /files/etc/puppetlabs/puppet/puppet.conf/runinterval 1800",
+ #	
+#			],
+#	lens => puppet
+#}
+	
+
+
+        ini_setting { 'agent_runinterval':
+
+                ensure  => present,
+                path    => "/etc/puppetlabs/puppet/puppet.conf",
+                section => "main",
+                setting => "runinterval",
+                value   => "1200",
+
+         }
+
+cron { 'puppet-agent':
+  ensure  => 'present',
+  command => '/usr/bin/puppet agent --onetime --no-daemonize --splay --splaylimit 60',
+  minute  => ['20'],
+  target  => 'root',
+  user    => 'root',
+}
+
+
+
+}
+
 
 
 class packages {
 
 	Package { ensure => 'installed' }
-	$packages = [ 'openssh', 'httpd', 'tmux', 'mariadb', 'mariadb-server', 'vnc-server', 'gcc', 'gdb', 'cgdb', 'dia', 'vim', 'emacs' ]
+	$packages = [ 'hiera', 'csh', 'openssh', 'httpd', 'tmux', 'mariadb', 'mariadb-server', 'vnc-server', 'gcc', 'gdb', 'cgdb', 'dia', 'vim', 'emacs' ]
 	package { $packages: }
+
 
 }
 
@@ -116,10 +194,6 @@ class groups {
 
 
 }
-
-
-
-
 
 
 
