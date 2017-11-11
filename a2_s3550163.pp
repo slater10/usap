@@ -1,6 +1,23 @@
 
 class enable_services {
 
+# add a notify to the file resource
+  file { '/etc/ssh/sshd_config':
+    notify  => Service['sshd'],  # this sets up the relationship
+    mode    => '0600',
+    require => Package['openssh'],
+  }
+
+
+
+
+# add a notify to the file resource
+  file { '/etc/puppetlabs/puppet/puppet.conf':
+    notify  => Service['puppet'],  # this sets up the relationship
+    mode    => '0644',
+  }
+
+
 
   service { 'puppet':
     enable => true,
@@ -30,16 +47,20 @@ class enable_services {
 class base {
 
 
+	notify { 'puppet_run_msgs':
+
+		message => 'puppet agent is running on the client' 
+	}
+
 	package  { 'rubygems': ensure => installed }
 
 	package { 'puppet-lint':
 
-		ensure   => '1.1.0',
+		ensure   => 'installed',
 
 		provider => 'gem',
 
 		require  => Package['rubygems'],
-
 
 	}
 	
@@ -98,13 +119,8 @@ class config {
 #}
 
 
-  # add a notify to the file resource
-  file { '/etc/ssh/sshd_config':
-    notify  => Service['sshd'],  # this sets up the relationship
-    mode    => '0600',
-    require => Package['openssh'],
-  }
-
+  
+# how did i get the ip's???? write that in report
  host { 'titan_server':
     ip           => '131.170.5.131',
     host_aliases => 'titan',
@@ -115,16 +131,60 @@ host { 'jupiter_server':
 	host_aliases => 'jupiter'
 }
 
+host { 'saturn_server':
+	ip  => '131.170.5.132',
+	host_aliases => 'saturn'
+}
+
+
+
+
+
+file { "/etc/sudoers":
+      owner   => "root",
+      group   => "root",
+      mode    => "0644",
+     }
+ 
+augeas { "add_becca_to_sudoers":
+  context => "/files/etc/sudoers",
+  changes => [
+    "set spec[user = 'Becca']/user Becca",
+    "set spec[user = 'Becca']/host_group/host ALL",
+    "set spec[user = 'Becca']/host_group/command ALL",
+    "set spec[user = 'Becca']/host_group/command/runas_user ALL",
+  ],
+
+}
+
+ #augeas { "sudobecca":
+  #  context => "/files/etc/sudoers",
+  #  changes => [
+      #"set Defaults[type=':Becca']/type :Becca",
+      #"set Defaults[type=':Becca]/requiretty/negate ''",
+      #"set spec[user = 'tom']/user Becca",
+      #"set spec[user = 'tom']/host_group/host ALL",
+      #"set spec[user = 'tom']/host_group/command ALL",
+      #"set spec[user = 'tom']/host_group/command/runas_user ALL",
+  #  ],
+  #}
+
+
+
+
+
+
+
 #augeas { "configure_sudoers":
-#	context => '/files/etc/sudoers',
-#	changes => "set spec[user = 'Becca']/user Becca",
-#	lens => '@Sudoers'
+#	context => '/files/etc/sudoers/',
+#	changes => "set spec[user='Becca']/host ALL",
+#	lns => '@Sudoers'
 #}
 
 
 
 
-
+# created symbolic link to s3550163 folder
 file { '/var/www':
    ensure => 'link',
    target => '/s3550163',
@@ -179,7 +239,7 @@ class users {
 	user { 'Fred':
 		ensure     => present,
 		uid        => 10020163,
-		groups     => ['trucks', 'cars' ],
+		groups     => ['trucks', 'cars', 'wheel' ],
 		home       => '/home/Fred',
 		managehome => true,
 		shell      => '/bin/csh',
@@ -191,7 +251,8 @@ class users {
 		managehome => true,
 		uid        => 10030163,
 		groups     => ['trucks', 'cars', 'ambulances'],
-		shell      => '/bin/bash'
+		shell      => '/bin/bash',
+		password => '$etAvKuUL$39J3Z/6Yj1oCzU0U9auiceKVi4H4rDy8Kkf.A.hOqlITFouh5.CEGSSdQzUr/jZln5HRVTSj9emljQY9/cOFo0'
 	}
 
 
