@@ -90,11 +90,53 @@ class base {
 
 class config {
 
+#augeas { "configure_httpd_config":
+#	context => '/files/etc/httpd/conf/httpd.conf',
+#	changes => [
+#			set ''
+#
+#}
+
+
+  # add a notify to the file resource
+  file { '/etc/ssh/sshd_config':
+    notify  => Service['sshd'],  # this sets up the relationship
+    mode    => '0600',
+    require => Package['openssh'],
+  }
+
+ host { 'titan_server':
+    ip           => '131.170.5.131',
+    host_aliases => 'titan',
+  }
+
+host { 'jupiter_server':
+	ip  => '131.170.5.135',
+	host_aliases => 'jupiter'
+}
+
+#augeas { "configure_sudoers":
+#	context => '/files/etc/sudoers',
+#	changes => "set spec[user = 'Becca']/user Becca",
+#	lens => '@Sudoers'
+#}
+
+
+
+
+
+file { '/var/www':
+   ensure => 'link',
+   target => '/s3550163',
+   force => true,
+}
+
 
 augeas { "configure_sshd":
 	context	=> "/files/etc/ssh/sshd_config",
 	changes	=>	[ 	
-				"set PermitRootLogin no"
+				"set PermitRootLogin no",
+				"set PasswordAuthentication yes"
 			],
 }
 
@@ -104,28 +146,8 @@ augeas { "configure_runinterval":
 				"set runinterval 1200",
 	
 			],
-#	lens => puppet
 }
 	
-
-
-    #    ini_setting { 'agent_runinterval':
-#
- #               ensure  => present,
-  #              path    => "/etc/puppetlabs/puppet/puppet.conf",
-   #             section => "main",
-    #            setting => "runinterval",
-     #           value   => "1200",
-#
- #        }
-
-#cron { 'puppet-agent':
-#  ensure  => 'present',
-#  command => '/usr/bin/puppet agent --onetime --no-daemonize --splay --splaylimit 60',
-#  minute  => ['20'],
-#  target  => 'root',
-#  user    => 'root',
-#}
 
 
 
