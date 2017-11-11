@@ -4,6 +4,7 @@ class enable_services {
 
   service { 'puppet':
     enable => true,
+    ensure => running
   }
   
   
@@ -97,34 +98,34 @@ augeas { "configure_sshd":
 			],
 }
 
-#augeas { "configure_runinterval":
-#	context	=> "/files/etc/puppetlabs/puppet/puppet.conf",
-#	changes	=>	[
-#				"set /files/etc/puppetlabs/puppet/puppet.conf/runinterval 1800",
- #	
-#			],
+augeas { "configure_runinterval":
+	context	=> "/files/etc/puppetlabs/puppet/puppet.conf/main",
+	changes	=>	[
+				"set runinterval 1200",
+	
+			],
 #	lens => puppet
-#}
+}
 	
 
 
-        ini_setting { 'agent_runinterval':
+    #    ini_setting { 'agent_runinterval':
+#
+ #               ensure  => present,
+  #              path    => "/etc/puppetlabs/puppet/puppet.conf",
+   #             section => "main",
+    #            setting => "runinterval",
+     #           value   => "1200",
+#
+ #        }
 
-                ensure  => present,
-                path    => "/etc/puppetlabs/puppet/puppet.conf",
-                section => "main",
-                setting => "runinterval",
-                value   => "1200",
-
-         }
-
-cron { 'puppet-agent':
-  ensure  => 'present',
-  command => '/usr/bin/puppet agent --onetime --no-daemonize --splay --splaylimit 60',
-  minute  => ['20'],
-  target  => 'root',
-  user    => 'root',
-}
+#cron { 'puppet-agent':
+#  ensure  => 'present',
+#  command => '/usr/bin/puppet agent --onetime --no-daemonize --splay --splaylimit 60',
+#  minute  => ['20'],
+#  target  => 'root',
+#  user    => 'root',
+#}
 
 
 
