@@ -6,7 +6,7 @@ class packages {
   Package { ensure => 'installed' }
 
     $packages = [
-      'links'
+      'links',
       'hiera',
       'csh',
       'openssh',
