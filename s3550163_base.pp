@@ -4,7 +4,7 @@ class base {
 
   exec { 'time':
     path      => '/bin',
-    command   => 'echo $(date +"%D-%T")('base::time')',
+    command   => 'echo $(date +"%D-%T")',
     logoutput => true,
   }
 
