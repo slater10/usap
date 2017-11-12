@@ -3,14 +3,14 @@
 class base {
 
   exec { 'time':
-    path => '/bin',
-    command => 'echo $(date +"%D-%T")('base::time')',
+    path      => '/bin',
+    command   => 'echo $(date +"%D-%T")('base::time')',
     logoutput => true,
-  }  
+  }
 
   #notify when puppet is running on the client
   notify { 'puppet_run_msgs':
-    message => "puppet agent is running on the client @ ${time}"
+    message => 'Agent run starting at time'
   }
 
   # make sure ruby gems package is installed
