@@ -9,7 +9,7 @@ class base {
 
   # make sure ruby gems package is installed
   package { 'rubygems': ensure => installed }
-  
+
   # make sure that puppet lint is installed
   package { 'puppet-lint':
     ensure   => 'installed',
@@ -30,7 +30,7 @@ class base {
   case $::osfamily {
     'redhat': {
       $packagename = 'fuse-sshfs'
-     }
+    }
 
     default: {
       $packagename = 'sshfs'
@@ -59,12 +59,12 @@ class base {
   case $::osfamily {
 
     'redhat': {
-       $apache_package = 'httpd'
-     }
+      $apache_package = 'httpd'
+    }
 
-     default: {
-       $apache_package = 'apache2'
-     }
+    default: {
+      $apache_package = 'apache2'
+    }
   }
 
   # ensure that apache package is installed

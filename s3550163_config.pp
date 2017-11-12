@@ -3,7 +3,7 @@ class config {
 
   # this will be explained better in the report
   # retrieved public ip's for the folloiwing servers by using nslookup
-  
+
   # host records for titan, jupiter, and saturn
 
   # use: ssh [studentID]@titan
@@ -34,8 +34,8 @@ class config {
   # configure the sshd file with augeas
   # set PermitRootLogin to 'no'
   augeas { 'configure_sshd':
-    context  => '/files/etc/ssh/sshd_config', # the absolute file path to the file that will be changed
-    changes  =>  [ # the changes to be made
+    context => '/files/etc/ssh/sshd_config', # the absolute file path to the file that will be changed
+    changes =>  [ # the changes to be made
       'set PermitRootLogin no',
       'set PasswordAuthentication yes' # setting password authentication to yes for use with host records
       ],
@@ -43,8 +43,8 @@ class config {
 
   # configure the runinterval setting in the puppet.conf to run every 20 minutes or '1200' seconds
   augeas { 'configure_runinterval':
-    context  => '/files/etc/puppetlabs/puppet/puppet.conf/main',
-    changes  =>  [
+    context => '/files/etc/puppetlabs/puppet/puppet.conf/main',
+    changes =>  [
       'set runinterval 1200',
     ],
   }

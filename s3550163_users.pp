@@ -10,7 +10,6 @@ class users {
     uid        => 10010163,
     shell      => '/bin/bash',
     password   => '$O23Nn9Kb$00PzwTV4wtSGUvOBESji/Dy/sI7maF8IEchtGMJhgRbrY9BbQYahLBAfdPWQpSBzskmf5i1hI5Ve159VlvNNM0'
-
   }
 
   # creating the user 'Fred'
@@ -21,7 +20,7 @@ class users {
     home       => '/home/Fred',
     managehome => true,
     shell      => '/bin/csh',
-    password   => '$SKgvUnI6$nhbaLPjtaA1lrkE.b7rwmXdmks8L5NN37RCsVyegmYu7YLk4kzfeNBHlblAwU/5oFOPItQDjcpREzHK6GYLw9/'
+    password   => '$6$/AL7yzZx$pRNkYfpqfh8blIQaWX6rYTBB.SuAc/8NYgDY5ZHwuFCNJEHnOSHoHIIsIAITpWAJy24MQm/sgxD3P59p6hSL/1'
   }
 
   # creating the user 'Wilma'
@@ -32,7 +31,7 @@ class users {
     uid        => 10030163,
     groups     => ['trucks', 'cars', 'ambulances'],
     shell      => '/bin/bash',
-    password   => '$etAvKuUL$39J3Z/6Yj1oCzU0U9auiceKVi4H4rDy8Kkf.A.hOqlITFouh5.CEGSSdQzUr/jZln5HRVTSj9emljQY9/cOFo0'
+    password   => '$6$Ifcwt.uN$dB4Ed6RaA1gVh6UeLA3Ss2Q4huPYIojgtJveyOlqHbBhtpTOIqwYvruM7.dCvV3imaiiNbnqTQJkZoBSJwQUn/'
   }
 
 }

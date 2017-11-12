@@ -17,27 +17,27 @@ class enable_services {
 
   # ensure puppet services are running
   service { 'puppet':
+    ensure => running,
     enable => true,
-    ensure => running
-  }
+      }
 
   # ensure mariadb or 'MySQL' services are running
   service { 'mariadb':
+    ensure => running,
     enable => true,
-    ensure => running
   }
 
   # ensure that sshd services are running
   service { 'sshd':
+    ensure => running,
     enable => true,
-    ensure => running
   }
 
   # ensure apache or 'httpd' services are running
   service { 'httpd':
+    ensure => running,
     enable => true,
     start  => true,
-    ensure => running
   }
 }
 
